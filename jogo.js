@@ -14,8 +14,6 @@ linha = 1;
 coluna = 1;
 quadro = 0;
 
-velocidade = 2;
-
 naveExibir = true;
 
 var persona = new Image();
@@ -26,9 +24,11 @@ xI = 1002;
 yI = Math.random() * 500;
 tipoI = Math.round( Math.random() * 4 );
 
+velocidade = 2;
+
 var inimigo = new Image();
-inimigo.src = 'Sprites/naveInimiga.png';
-/*
+//inimigo.src = 'Sprites/naveInimiga.png';
+
 if( tipoI == 0 ){
     inimigo.src = 'Sprites/naveInimiga.png';
 }
@@ -47,7 +47,7 @@ else if( tipoI == 3 ){
 
 else if( tipoI == 4 ){
     inimigo.src = 'Sprites/naveInimiga.png';            
-}*/
+}
 
 
 //Váriaveis do fim do jogo
@@ -88,8 +88,8 @@ function Desenhar(){
     //context.clearRect( 0, 0, canvas.width, canvas.height );
     Fundo();
     Persona();
-    Explodir( explodirInimigo );
     Inimigo();
+    Explodir( explodirInimigo );
     GameOver();
     Win();
     desenhaVidas();
@@ -252,9 +252,7 @@ function Persona(){
 
 //Função da nave inimiga
 function Inimigo(){
-    inimigo.onload = function(){
-        context.drawImage( inimigo, xI, yI, 160, 160 );
-    }
+    context.drawImage( inimigo, xI, yI, 160, 160 );
 
     xI-= velocidade;
     velocidade-= 0.000005;
@@ -263,7 +261,7 @@ function Inimigo(){
         xI = 1002;
         yI = Math.random() * 500;
 
-        //tipoI = Math.round( Math.random() * 4 );
+        tipoI = Math.round( Math.random() * 4 );
     }
 
     if( xI > 1002 && xI < 0 ){
