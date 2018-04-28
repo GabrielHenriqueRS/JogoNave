@@ -49,10 +49,15 @@ else if( tipoI == 4 ){
     inimigo.src = 'Sprites/naveInimiga.png';            
 }
 
-
 //Váriaveis do fim do jogo
 gameOver = false;
 win = false;
+
+var fundoD = new Image();
+fundoD.src = 'Telas/derrota.jpg';
+
+var fundoV = new Image();
+fundoV.src = 'Telas/vitoria.jpg';
 
 //Vaviáveis da animação da explosão e do tiro
 explodirInimigo = false;
@@ -61,12 +66,16 @@ balas = new Array();
 var explode = new Image();
 explode.src = 'Sprites/explosao.png';
 
-
 //Variáveis dos sons
 somTiro = new Audio( 'Sons/tiro.mp3' );
+
 somFundo = new Audio( 'Sons/fundo.mp3' );
 somFundo.play();
 somFundo.loop = true;
+
+somDerrota = new Audio( 'Sons/musicaD.mp3' );
+
+somVitoria = new Audio( 'Sons/musicaV.mp3' );
 
 //Variáveis da tela de fundo
 var fundo = new Image();
@@ -83,9 +92,7 @@ requestAnimationFrame( Desenhar );
 function Desenhar(){
     agora = new Date().getTime();
     decorrido = agora - anterior;
-    //console.log( 'Tempo decorrido: ' + decorrido );
     
-    //context.clearRect( 0, 0, canvas.width, canvas.height );
     Fundo();
     Persona();
     Inimigo();
@@ -95,35 +102,34 @@ function Desenhar(){
     desenhaVidas();
     desenhaPontos();
 
-    for( var c=0; c<balas.length; c++ ) {
+    for( var c = 0; c < balas.length; c++ ) {
         balas[c].mover();
-        console.log( 'Balas mover' );
     }
 
     anterior = agora;
 
-    if( gameOver || win == true ){
-        cancelAnimationFrame( Desenhar );
+    if( win == true ){
+        requestAnimationFrame( Win );
     } else {
         requestAnimationFrame( Desenhar );
     }
 
-    /*if( win==true ){
+    /*if( win == true ){
         cancelAnimationFrame( Desenhar );
     } else {
         requestAnimationFrame( Desenhar );
-    }*/	
+    }	*/
 }
 
-function Limpar(){
-    context.clearRect( 0, 0, canvas.width, canvas.height );
-    //cancelAnimationFrame( gameLoop );
+/*function Limpar(){
+    //context.clearRect( 0, 0, canvas.width, canvas.height );
+    cancelAnimationFrame( gameLoop );
 }
 
 function gameLoop(){
     Limpar();
     Desenhar();
-}
+}*/
 
 //Placar de pontos
 function desenhaPontos(){
@@ -144,18 +150,14 @@ function desenhaVidas(){
 //Fim com derrota
 function GameOver(){
     if( gameOver == true ){
-        var fundo = new Image();
-        fundo.src = 'Telas/derrota.jpg';
-
-        fundo.onload = function(){
-            context.drawImage( fundo, 0, 0, 1280, 900 );
+        fundoD.onload = function(){
+            context.drawImage( fundoD, 0, 0, 1280, 900 );
         }
 
         somFundo.pause();
         somFundo.currentTime = 0;
 
-        somFim = new Audio( 'Sons/musicaD.mp3' );
-        somFim.play();
+        somDerrota.play();
 
         explodirInimigo = false;
         desenhaVidas() = false;
@@ -166,23 +168,21 @@ function GameOver(){
 //Fim com vitória
 function Win(){
     if( win == true ){
-        var fundo = new Image();
-        fundo.src = 'Telas/vitoria.jpg';
-
-        fundo.onload = function(){
-            context.drawImage( fundo, 0, 0, 1280, 900 );
-        }
+        //fundoV.onload = function(){
+            context.drawImage( fundoV, 0, 0, 1280, 900 );
+        //}
 
         somFundo.pause();
         somFundo.currentTime = 0;
 
-        somFim = new Audio( 'Sons/musicaV.mp3' );
-        somFim.play();
+        somVitoria.play();
 
         explodirInimigo = false;
-        desenhaVidas() = false;
-        desenhaPontos() = false;
+        //desenhaVidas() = false;
+        //desenhaPontos() = false;
 
+        //cancelAnimationFrame( Desenhar );
+        //cancelAnimationFrame ( Fundo() );
     }
 }
 
@@ -349,7 +349,7 @@ function Tiro(){
 
                 pontos++;
 
-                if( pontos >= 10 ){
+                if( pontos >= 2 ){
                     win = true;
                 }					
             }
